@@ -57,12 +57,29 @@ jobs:
           
           # 从 releases 中提取构建的分发版本
           distro_versions = {}
+          # distro_version_table
+          dv_table = {
+              "fedora": {
+                  "43": ["v4.31.0"]
+              },
+              "alpine": {
+                  "3.22.2": ["v4.30.1"]
+              },
+              "pardus": {
+                  "yirmibes": ["v4.33.2"]
+              },
+              "opensuse": {
+                  "16": ["v4.31.0"]
+              }
+          }
+          rolling = ["archlinux", "manjaro"]
           
           for release in releases:
               release_tag = release["tag_name"]
               release_assets = release.get("assets", [])
               
               # 从文件名提取分发版本信息: distro-version-arch-pd-vX.tar.xz
+              print("Getting Releases...")
               for asset in release_assets:
                   filename = asset["name"]
                   # 匹配格式: debian-trixie-aarch64-pd-v4.37.0.tar.xz
@@ -81,13 +98,59 @@ jobs:
                               "pd_version": pd_version,
                               "archs": {}
                           }
-                      
-                      # 获取文件下载 URL 和 SHA256
                       download_url = asset["browser_download_url"]
+                      distro_versions[key]["archs"][arch] = {
+                          "url": download_url
+                      }
+                      continue
+                                         
+                  # alpine-arm64-pd-vx.xx.x.tar.xz
+                  match = re.match(r'([a-z]+)-([a-z0-9]+)-pd-(v[\d.]+)\.tar\.xz', filename)
+                  if match:
+                      distro = match.group(1)
+                      arch = match.group(2)
+                      pd_version = match.group(3)
                       
-                      # 计算 SHA256
-                      print(f"Downloading {filename} to compute SHA256...")
-                      file_response = requests.get(download_url, stream=True)
+                      if distro == "debian":
+                          continue
+                      elif distro == "ubuntu":
+                          continue
+                      
+                      try:
+                          for key, v in dv_table[distro].items():
+                              if pd_version in dv_table[distro][key]:
+                                  version = key
+                      except KeyError:
+                          print("Ignore")
+                      if distro in rolling:
+                          version = "rolling"
+                      
+                      key=f"{distro}"
+                      if version != "":
+                          key= f"{distro}-{version}"
+                      
+                      if key not in distro_versions:
+                          distro_versions[key] = {
+                              "distro": distro,
+                              "pd_version": pd_version,
+                              "archs": {}
+                          }
+                      if version != "":
+                          distro_versions[key]["version"] = version
+                          
+                      download_url = asset["browser_download_url"]
+                      distro_versions[key]["archs"][arch] = {
+                          "url": download_url
+                      }
+                      continue
+          
+          print("sha256 checksum....pls wait a second")
+          for key, info in distro_versions.items():
+              for arch, arch_info in info["archs"].items():
+                  url = arch_info["url"]
+                  try:
+                      print(f"  Downloading {key} ({arch})...")
+                      file_response = requests.get(url, stream=True, timeout=300)
                       file_response.raise_for_status()
                       
                       import hashlib
@@ -96,10 +159,11 @@ jobs:
                           sha256_hash.update(chunk)
                       sha256 = sha256_hash.hexdigest()
                       
-                      distro_versions[key]["archs"][arch] = {
-                          "url": download_url,
-                          "sha256": sha256
-                      }
+                      arch_info["sha256"] = sha256
+                      print(f"    SHA256: {sha256}")
+                  except Exception as e:
+                      print(f"    Error computing SHA256 for {key} ({arch}): {e}")
+                      arch_info["sha256"] = ""
           
           # 输出收集的版本信息
           print("Collected distributions:")
@@ -131,9 +195,12 @@ jobs:
           
           for key, info in distro_versions.items():
               distro = info["distro"]
-              version = info["version"]
               pd_version = info["pd_version"]
               archs = info["archs"]
+              try:
+                  version=info["version"]
+              except KeyError:
+                  version=""
               
               # 跳过已有的主要分发版本（只为新增版本创建）
               plugin_file = plugins_dir / f"{distro}-{version}.sh"
@@ -144,7 +211,10 @@ jobs:
           # Auto-generated on {datetime.now().isoformat()}
           
           DISTRO_NAME="{distro.capitalize()} ({version})"
-          DISTRO_COMMENT="Version {version}"
+          if version =="":
+              DISTRO_COMMENT="{distro.capitalize()} of {version} from Proot-distro {pd_version}"
+          else:
+              DISTRO_COMMENT="{distro.capitalize()} from Proot-distro {pd_version}"
           
           '''
               
