@@ -189,16 +189,18 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}
 
-      - name: Check for changes
+      - name: Check for changes && mkdir
         id: check-changes
         run: |
           git diff --quiet distro-plugins/ || echo "has_changes=true" >> $GITHUB_OUTPUT
+          mkdir build
+          cp -r ./distro-plugins ./build/distros
       
       - name: Push
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
           target_branch: main
-          build_dir: distro-plugins
+          build_dir: build
           keep_history: ${{ !inputs.force_push_to_output_branch }}
           commit_message: |
             Update [action]
