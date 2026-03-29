@@ -1,0 +1,207 @@
+name: Update Try
+on:
+  schedule:
+    # 每天 UTC 时间 08:00 运行
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-rootfs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Fetch latest rootfs versions
+        id: fetch-versions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 << 'EOF'
+          import json
+          import os
+          import re
+          import subprocess
+          from datetime import datetime
+          from pathlib import Path
+          
+          import requests
+          
+          REPO_OWNER = "termux"
+          REPO_NAME = "proot-distro"
+          GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
+          
+          headers = {
+              "Accept": "application/vnd.github.v3+json"
+          }
+          if GITHUB_TOKEN:
+              headers["Authorization"] = f"token {GITHUB_TOKEN}"
+          
+          # 获取最新的 releases
+          url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/releases"
+          response = requests.get(url, headers=headers)
+          response.raise_for_status()
+          releases = response.json()
+          
+          # 从 releases 中提取构建的分发版本
+          distro_versions = {}
+          
+          for release in releases:
+              release_tag = release["tag_name"]
+              release_assets = release.get("assets", [])
+              
+              # 从文件名提取分发版本信息: distro-version-arch-pd-vX.tar.xz
+              for asset in release_assets:
+                  filename = asset["name"]
+                  # 匹配格式: debian-trixie-aarch64-pd-v4.37.0.tar.xz
+                  match = re.match(r'([a-z]+)-([a-z0-9.]+)-([a-z0-9]+)-pd-(v[\d.]+)\.tar\.xz', filename)
+                  if match:
+                      distro = match.group(1)
+                      version = match.group(2)
+                      arch = match.group(3)
+                      pd_version = match.group(4)
+                      
+                      key = f"{distro}-{version}"
+                      if key not in distro_versions:
+                          distro_versions[key] = {
+                              "distro": distro,
+                              "version": version,
+                              "pd_version": pd_version,
+                              "archs": {}
+                          }
+                      
+                      # 获取文件下载 URL 和 SHA256
+                      download_url = asset["browser_download_url"]
+                      
+                      # 计算 SHA256
+                      print(f"Downloading {filename} to compute SHA256...")
+                      file_response = requests.get(download_url, stream=True)
+                      file_response.raise_for_status()
+                      
+                      import hashlib
+                      sha256_hash = hashlib.sha256()
+                      for chunk in file_response.iter_content(chunk_size=8192):
+                          sha256_hash.update(chunk)
+                      sha256 = sha256_hash.hexdigest()
+                      
+                      distro_versions[key]["archs"][arch] = {
+                          "url": download_url,
+                          "sha256": sha256
+                      }
+          
+          # 输出收集的版本信息
+          print("Collected distributions:")
+          for key, info in distro_versions.items():
+              print(f"  {key}: {list(info['archs'].keys())}")
+          
+          # 保存到文件供后续步骤使用
+          with open("distro_versions.json", "w") as f:
+              json.dump(distro_versions, f, indent=2)
+          
+          EOF
+
+      - name: Generate distribution plugins
+        id: generate-plugins
+        run: |
+          python3 << 'EOF'
+          import json
+          import os
+          from pathlib import Path
+          
+          with open("distro_versions.json", "r") as f:
+              distro_versions = json.load(f)
+          
+          plugins_dir = Path("distro-plugins")
+          plugins_dir.mkdir(exist_ok=True)
+          
+          created_files = []
+          
+          for key, info in distro_versions.items():
+              distro = info["distro"]
+              version = info["version"]
+              pd_version = info["pd_version"]
+              archs = info["archs"]
+              
+              # 跳过已有的主要分发版本（只为新增版本创建）
+              plugin_file = plugins_dir / f"{distro}-{version}.sh"
+              
+              # 生成脚本内容
+              content = f'''#!/bin/bash
+          # This is a distribution plug-in for {distro.capitalize()} ({version}).
+          # Auto-generated on {datetime.now().isoformat()}
+          
+          DISTRO_NAME="{distro.capitalize()} ({version})"
+          DISTRO_COMMENT="Version {version}"
+          
+          '''
+              
+              # 添加每个架构的 TARBALL_URL 和 SHA256
+              for arch, info_arch in sorted(archs.items()):
+                  url = info_arch["url"]
+                  sha256 = info_arch["sha256"]
+                  content += f'''TARBALL_URL['{arch}']=\"{url}\"
+          TARBALL_SHA256['{arch}']=\"{sha256}\"
+          '''
+              
+              # 可选的 distro_setup 函数（根据分发版本定制）
+              if distro in ["debian", "ubuntu"]:
+                  content += '''
+          distro_setup() {
+          \t# Configure en_US.UTF-8 locale.
+          \tsed -i -E 's/#[[:space:]]?(en_US.UTF-8[[:space:]]+UTF-8)/\\1/g' ./etc/locale.gen
+          \trun_proot_cmd DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
+          }
+          '''
+              elif distro == "fedora":
+                  content += '''
+          distro_setup() {
+          \t# Fix environment variables on login or su.
+          \trun_proot_cmd authselect opt-out
+          \techo "session  required  pam_env.so readenv=1" >> ./etc/pam.d/system-auth
+          }
+          '''
+              
+              # 写入文件
+              with open(plugin_file, "w") as f:
+                  f.write(content)
+              
+              created_files.append(str(plugin_file))
+              print(f"Created {plugin_file}")
+          
+          # 输出创建的文件列表
+          with open("created_files.txt", "w") as f:
+              f.write("\n".join(created_files))
+          
+          EOF
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          git diff --quiet distro-plugins/ || echo "has_changes=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push changes
+        if: steps.check-changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@"
+          git add distro-plugins/
+          git commit -m "[New]: 更新的 Rootfs
+
+          Auto-generated by proot-distro update workflow
+          - Fetched latest rootfs versions from releases
+          - Updated distribution plugin scripts"
+          git push
