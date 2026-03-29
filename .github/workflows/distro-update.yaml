@@ -118,6 +118,7 @@ jobs:
           python3 << 'EOF'
           import json
           import os
+          from datetime import datetime
           from pathlib import Path
           
           with open("distro_versions.json", "r") as f:
