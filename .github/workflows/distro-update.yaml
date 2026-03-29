@@ -197,6 +197,7 @@ jobs:
               distro = info["distro"]
               pd_version = info["pd_version"]
               archs = info["archs"]
+              version=""
               try:
                   version=info["version"]
               except KeyError:
@@ -211,10 +212,7 @@ jobs:
           # Auto-generated on {datetime.now().isoformat()}
           
           DISTRO_NAME="{distro.capitalize()} ({version})"
-          if version =="":
-              DISTRO_COMMENT="{distro.capitalize()} of {version} from Proot-distro {pd_version}"
-          else:
-              DISTRO_COMMENT="{distro.capitalize()} from Proot-distro {pd_version}"
+          DISTRO_COMMENT="{distro.capitalize()} of {version} from Proot-distro {pd_version}"
           
           '''
               
