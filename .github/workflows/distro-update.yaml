@@ -193,8 +193,9 @@ jobs:
         id: check-changes
         run: |
           git diff --quiet distro-plugins/ || echo "has_changes=true" >> $GITHUB_OUTPUT
-
-      uses: crazy-max/ghaction-github-pages@v3.1.0
+      
+      - name: Push
+        uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
           target_branch: main
           build_dir: distro-plugins
