@@ -1,9 +1,12 @@
 #!/bin/bash
 # This is a distribution plug-in for Ubuntu (questing).
-# Auto-generated on 2026-03-29T17:21:30.460169
+# Auto-generated on 2026-03-29T19:00:05.023353
 
 DISTRO_NAME="Ubuntu (questing)"
-DISTRO_COMMENT="Version questing"
+if version =="":
+    DISTRO_COMMENT="Ubuntu of questing from Proot-distro v4.30.1"
+else:
+    DISTRO_COMMENT="Ubuntu from Proot-distro v4.30.1"
 
 TARBALL_URL['aarch64']="https://github.com/termux/proot-distro/releases/download/v4.30.1/ubuntu-questing-aarch64-pd-v4.30.1.tar.xz"
 TARBALL_SHA256['aarch64']="5ab35b90cd9a9f180656261ba400a135c4c01c2da4b74522118342f985c2d328"

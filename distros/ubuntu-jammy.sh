@@ -1,9 +1,12 @@
 #!/bin/bash
 # This is a distribution plug-in for Ubuntu (jammy).
-# Auto-generated on 2026-03-29T17:21:30.460523
+# Auto-generated on 2026-03-29T19:00:05.024972
 
 DISTRO_NAME="Ubuntu (jammy)"
-DISTRO_COMMENT="Version jammy"
+if version =="":
+    DISTRO_COMMENT="Ubuntu of jammy from Proot-distro v4.11.0"
+else:
+    DISTRO_COMMENT="Ubuntu from Proot-distro v4.11.0"
 
 TARBALL_URL['aarch64']="https://github.com/termux/proot-distro/releases/download/v4.7.0/ubuntu-jammy-aarch64-pd-v4.7.0.tar.xz"
 TARBALL_SHA256['aarch64']="d4e3aa02399f84806239c7cea491c5d75eaf8d9e8e00b9f0318d5b990a908519"

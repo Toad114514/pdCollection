@@ -1,9 +1,12 @@
 #!/bin/bash
 # This is a distribution plug-in for Ubuntu (focal).
-# Auto-generated on 2026-03-29T17:21:30.460585
+# Auto-generated on 2026-03-29T19:00:05.025086
 
 DISTRO_NAME="Ubuntu (focal)"
-DISTRO_COMMENT="Version focal"
+if version =="":
+    DISTRO_COMMENT="Ubuntu of focal from Proot-distro v4.8.0"
+else:
+    DISTRO_COMMENT="Ubuntu from Proot-distro v4.8.0"
 
 TARBALL_URL['aarch64']="https://github.com/termux/proot-distro/releases/download/v4.8.0/ubuntu-focal-aarch64-pd-v4.8.0.tar.xz"
 TARBALL_SHA256['aarch64']="386704baf86bebaf39141a92f4a5fa4cf4fdb94bcb55b85e94b1aea603e000ff"

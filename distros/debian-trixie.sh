@@ -1,9 +1,12 @@
 #!/bin/bash
 # This is a distribution plug-in for Debian (trixie).
-# Auto-generated on 2026-03-29T17:21:30.460258
+# Auto-generated on 2026-03-29T19:00:05.023686
 
 DISTRO_NAME="Debian (trixie)"
-DISTRO_COMMENT="Version trixie"
+if version =="":
+    DISTRO_COMMENT="Debian of trixie from Proot-distro v4.29.0"
+else:
+    DISTRO_COMMENT="Debian from Proot-distro v4.29.0"
 
 TARBALL_URL['aarch64']="https://github.com/termux/proot-distro/releases/download/v4.26.0/debian-trixie-aarch64-pd-v4.26.0.tar.xz"
 TARBALL_SHA256['aarch64']="cda75346f2c9e09e8a802665745b5a7e2bd6d8584dbf1c86c8c57ef54c4e2d3c"

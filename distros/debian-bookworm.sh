@@ -1,9 +1,12 @@
 #!/bin/bash
 # This is a distribution plug-in for Debian (bookworm).
-# Auto-generated on 2026-03-29T17:21:30.460462
+# Auto-generated on 2026-03-29T19:00:05.024681
 
 DISTRO_NAME="Debian (bookworm)"
-DISTRO_COMMENT="Version bookworm"
+if version =="":
+    DISTRO_COMMENT="Debian of bookworm from Proot-distro v4.17.3"
+else:
+    DISTRO_COMMENT="Debian from Proot-distro v4.17.3"
 
 TARBALL_URL['aarch64']="https://github.com/termux/proot-distro/releases/download/v4.7.0/debian-bookworm-aarch64-pd-v4.7.0.tar.xz"
 TARBALL_SHA256['aarch64']="4baa32280cc70b67e2c650777c1d974349f0cdf23afaabc305ad3bc6182b8df8"

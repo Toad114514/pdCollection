@@ -1,9 +1,12 @@
 #!/bin/bash
 # This is a distribution plug-in for Ubuntu (plucky).
-# Auto-generated on 2026-03-29T17:21:30.460331
+# Auto-generated on 2026-03-29T19:00:05.024008
 
 DISTRO_NAME="Ubuntu (plucky)"
-DISTRO_COMMENT="Version plucky"
+if version =="":
+    DISTRO_COMMENT="Ubuntu of plucky from Proot-distro v4.29.0"
+else:
+    DISTRO_COMMENT="Ubuntu from Proot-distro v4.29.0"
 
 TARBALL_URL['aarch64']="https://github.com/termux/proot-distro/releases/download/v4.29.0/ubuntu-plucky-aarch64-pd-v4.29.0.tar.xz"
 TARBALL_SHA256['aarch64']="63cee3aecc0473785ef761ec1127387ed2abbea0b26d74e5187601568fbb335f"

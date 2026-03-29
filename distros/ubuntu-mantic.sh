@@ -1,9 +1,12 @@
 #!/bin/bash
 # This is a distribution plug-in for Ubuntu (mantic).
-# Auto-generated on 2026-03-29T17:21:30.460648
+# Auto-generated on 2026-03-29T19:00:05.025149
 
 DISTRO_NAME="Ubuntu (mantic)"
-DISTRO_COMMENT="Version mantic"
+if version =="":
+    DISTRO_COMMENT="Ubuntu of mantic from Proot-distro v4.8.0"
+else:
+    DISTRO_COMMENT="Ubuntu from Proot-distro v4.8.0"
 
 TARBALL_URL['aarch64']="https://github.com/termux/proot-distro/releases/download/v4.7.0/ubuntu-mantic-aarch64-pd-v4.7.0.tar.xz"
 TARBALL_SHA256['aarch64']="6bc671c37912fc41e230f6ed11d60c83cd1756e6c8d7051709bf8fdeff93aaa7"

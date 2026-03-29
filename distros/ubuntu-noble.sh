@@ -1,9 +1,12 @@
 #!/bin/bash
 # This is a distribution plug-in for Ubuntu (noble).
-# Auto-generated on 2026-03-29T17:21:30.460399
+# Auto-generated on 2026-03-29T19:00:05.024507
 
 DISTRO_NAME="Ubuntu (noble)"
-DISTRO_COMMENT="Version noble"
+if version =="":
+    DISTRO_COMMENT="Ubuntu of noble from Proot-distro v4.18.0"
+else:
+    DISTRO_COMMENT="Ubuntu from Proot-distro v4.18.0"
 
 TARBALL_URL['aarch64']="https://github.com/termux/proot-distro/releases/download/v4.11.0/ubuntu-noble-aarch64-pd-v4.11.0.tar.xz"
 TARBALL_SHA256['aarch64']="a8883244a7031559a2bd8dc16b7d8afc947930b611819d8a28a09545097a6ba5"

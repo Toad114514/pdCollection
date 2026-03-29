@@ -1,9 +1,12 @@
 #!/bin/bash
 # This is a distribution plug-in for Debian (bullseye).
-# Auto-generated on 2026-03-29T17:21:30.460706
+# Auto-generated on 2026-03-29T19:00:05.025206
 
 DISTRO_NAME="Debian (bullseye)"
-DISTRO_COMMENT="Version bullseye"
+if version =="":
+    DISTRO_COMMENT="Debian of bullseye from Proot-distro v4.7.0"
+else:
+    DISTRO_COMMENT="Debian from Proot-distro v4.7.0"
 
 TARBALL_URL['aarch64']="https://github.com/termux/proot-distro/releases/download/v4.7.0/debian-bullseye-aarch64-pd-v4.7.0.tar.xz"
 TARBALL_SHA256['aarch64']="8dc2cb6e8ba19518ffdc5c5f6d3d7a1f7a898ebabd49b8fab0fc59d67e305754"
