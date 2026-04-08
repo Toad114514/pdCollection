@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a distribution plug-in for Chimera (rolling).
-# Auto-generated on 2026-04-07T08:50:44.476153
+# Auto-generated on 2026-04-08T08:51:15.706378
 
 DISTRO_NAME="Chimera (rolling)"
 DISTRO_COMMENT="Chimera of rolling from Proot-distro v4.29.0"
