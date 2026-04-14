@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a distribution plug-in for Rocky (rolling).
-# Auto-generated on 2026-04-13T09:25:20.324956
+# Auto-generated on 2026-04-14T09:09:58.505686
 
 DISTRO_NAME="Rocky (rolling)"
 DISTRO_COMMENT="Rocky of rolling from Proot-distro v4.29.0"

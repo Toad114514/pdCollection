@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a distribution plug-in for Ubuntu (plucky).
-# Auto-generated on 2026-04-13T09:25:20.325016
+# Auto-generated on 2026-04-14T09:09:58.505755
 
 DISTRO_NAME="Ubuntu (plucky)"
 DISTRO_COMMENT="Ubuntu of plucky from Proot-distro v4.29.0"
