@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a distribution plug-in for Adelie (questing).
-# Auto-generated on 2026-04-16T09:09:37.377995
+# Auto-generated on 2026-04-17T09:09:03.286682
 
 DISTRO_NAME="Adelie (questing)"
 DISTRO_COMMENT="Adelie of questing from Proot-distro v4.29.0"

@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a distribution plug-in for Deepin (trixie).
-# Auto-generated on 2026-04-16T09:09:37.378302
+# Auto-generated on 2026-04-17T09:09:03.286986
 
 DISTRO_NAME="Deepin (trixie)"
 DISTRO_COMMENT="Deepin of trixie from Proot-distro v4.29.0"
