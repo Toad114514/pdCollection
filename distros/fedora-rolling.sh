@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a distribution plug-in for Fedora (rolling).
-# Auto-generated on 2026-04-26T08:48:15.286988
+# Auto-generated on 2026-04-27T10:03:36.396085
 
 DISTRO_NAME="Fedora (rolling)"
 DISTRO_COMMENT="Fedora of rolling from Proot-distro v4.6.0"
