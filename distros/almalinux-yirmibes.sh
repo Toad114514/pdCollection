@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a distribution plug-in for Almalinux (yirmibes).
-# Auto-generated on 2026-04-28T10:04:55.687100
+# Auto-generated on 2026-04-29T09:56:46.224259
 
 DISTRO_NAME="Almalinux (yirmibes)"
 DISTRO_COMMENT="Almalinux of yirmibes from Proot-distro v4.31.0"

@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a distribution plug-in for Debian (bullseye).
-# Auto-generated on 2026-04-28T10:04:55.689381
+# Auto-generated on 2026-04-29T09:56:46.226485
 
 DISTRO_NAME="Debian (bullseye)"
 DISTRO_COMMENT="Debian of bullseye from Proot-distro v4.7.0"

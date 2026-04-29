@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a distribution plug-in for Deepin (noble).
-# Auto-generated on 2026-04-28T10:04:55.689012
+# Auto-generated on 2026-04-29T09:56:46.226116
 
 DISTRO_NAME="Deepin (noble)"
 DISTRO_COMMENT="Deepin of noble from Proot-distro v4.16.0"

@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a distribution plug-in for Fedora (noble).
-# Auto-generated on 2026-04-28T10:04:55.689069
+# Auto-generated on 2026-04-29T09:56:46.226171
 
 DISTRO_NAME="Fedora (noble)"
 DISTRO_COMMENT="Fedora of noble from Proot-distro v4.15.0"
