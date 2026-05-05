@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a distribution plug-in for Alpine (rolling).
-# Auto-generated on 2026-05-04T10:04:59.736595
+# Auto-generated on 2026-05-05T09:50:15.528862
 
 DISTRO_NAME="Alpine (rolling)"
 DISTRO_COMMENT="Alpine of rolling from Proot-distro v4.21.0"

@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a distribution plug-in for Void (noble).
-# Auto-generated on 2026-05-04T10:04:59.736839
+# Auto-generated on 2026-05-05T09:50:15.528990
 
 DISTRO_NAME="Void (noble)"
 DISTRO_COMMENT="Void of noble from Proot-distro v4.18.0"

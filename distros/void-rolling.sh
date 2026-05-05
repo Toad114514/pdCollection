@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a distribution plug-in for Void (rolling).
-# Auto-generated on 2026-05-04T10:04:59.736497
+# Auto-generated on 2026-05-05T09:50:15.528819
 
 DISTRO_NAME="Void (rolling)"
 DISTRO_COMMENT="Void of rolling from Proot-distro v4.22.1"
