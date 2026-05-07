@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a distribution plug-in for Adelie (rolling).
-# Auto-generated on 2026-05-06T10:07:54.703429
+# Auto-generated on 2026-05-07T10:12:50.966479
 
 DISTRO_NAME="Adelie (rolling)"
 DISTRO_COMMENT="Adelie of rolling from Proot-distro v4.19.0"

@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a distribution plug-in for Artix (rolling).
-# Auto-generated on 2026-05-06T10:07:54.702572
+# Auto-generated on 2026-05-07T10:12:50.965853
 
 DISTRO_NAME="Artix (rolling)"
 DISTRO_COMMENT="Artix of rolling from Proot-distro v4.29.0"

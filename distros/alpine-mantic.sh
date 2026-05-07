@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a distribution plug-in for Alpine (mantic).
-# Auto-generated on 2026-05-06T10:07:54.704335
+# Auto-generated on 2026-05-07T10:12:50.967157
 
 DISTRO_NAME="Alpine (mantic)"
 DISTRO_COMMENT="Alpine of mantic from Proot-distro v4.6.0"
